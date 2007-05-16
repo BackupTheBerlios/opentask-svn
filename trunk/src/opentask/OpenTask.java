@@ -24,6 +24,8 @@ package opentask;
 import javax.swing.*;
 import java.awt.event.*;
 
+import opentask.data.*;
+
 /**
  * @author rassler
  *
@@ -33,6 +35,7 @@ public class OpenTask implements ActionListener{
 	// important GUI elements
 	JPanel mainPanel;
 	JMenuBar menuBar;
+	JTable table;
 	
 	// important Data 
 	private boolean dirty;
@@ -83,8 +86,15 @@ public class OpenTask implements ActionListener{
 	private void createMainPane() {
 		mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
-		mainPanel.add(new JLabel("Hallo!"));
+		
+		
+		table = new JTable(new ItemListModel());
+		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		JScrollPane scrollPane = new JScrollPane(table);
+		table.setFillsViewportHeight(true);
+		mainPanel.add(scrollPane);
 	}
+	
 	
 	private static void createAndShowGUI() {
 		JFrame.setDefaultLookAndFeelDecorated(true);

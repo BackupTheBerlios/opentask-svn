@@ -33,6 +33,8 @@ public class ActionItem {
 	private Calendar notifyTime;
 	private int duration;
 	private int nextNotification;
+	private String itemName;
+	private String description;
 	
 	public static int MINUTE = 1000 * 60; // Milliseconds
 	public static int HOUR = MINUTE * 60;
@@ -92,6 +94,22 @@ public class ActionItem {
 	
 	public void setSchedule(Calendar schedule) {
 		this.schedule = schedule;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
 	}
 	
 }
