@@ -64,8 +64,15 @@ public class ItemListModel extends AbstractTableModel {
     	line[4] = obj.getDescription();
     	
     	if (row > data.size() || row < 0)
+    	{
     		data.add(line);
-    	else data.add(row, line);
+    		fireTableRowsInserted(data.size()-1, data.size());
+    	}
+    	else 
+    	{
+    		data.add(row, line);
+    		fireTableRowsInserted(row-1, row);
+    	}
     	    	
     }
 }

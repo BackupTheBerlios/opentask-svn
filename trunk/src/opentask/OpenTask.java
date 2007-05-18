@@ -58,7 +58,7 @@ public class OpenTask implements ActionListener{
 		menu = new JMenu("File");
 		menuBar.add(menu);
 		menuItem = new JMenuItem("Exit", KeyEvent.VK_I);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.ALT_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
         //menuItem.getAccessibleContext().setAccessibleDescription("This doesn't really do anything");
         menuItem.addActionListener(new CloseAction(this));
         menu.add(menuItem);
@@ -66,7 +66,8 @@ public class OpenTask implements ActionListener{
         // Task Menu
         menu = new JMenu("Task");
 		menuItem = new JMenuItem("New", KeyEvent.VK_N);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.ALT_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
+        menuItem.addActionListener(new ItemDialogAction(null, "New Task"));
         menu.add(menuItem);
 		menuItem = new JMenuItem("Edit", KeyEvent.VK_E);
         menu.add(menuItem);
@@ -143,4 +144,24 @@ class CloseAction implements ActionListener {
     	if (app instanceof OpenTask) ((OpenTask)app).saveData();
         System.exit(0);
     }
+}
+
+class ItemDialogAction implements ActionListener {
+	JFrame window;
+	String title;
+	ActionItem item;
+	public ItemDialogAction(JFrame window, String title) {
+		this.window = window;
+		this.title = title;
+	}
+	public ItemDialogAction(JFrame window, String title, ActionItem item) {
+		this.window = window;
+		this.title = title;
+		this.item = item;
+	}
+	public void actionPerformed(ActionEvent e) {
+		ItemDialog dialog = new ItemDialog(window, title);
+		if (item != null) dialog.setData(item);
+		dialog.setVisible(true);
+	}
 }
