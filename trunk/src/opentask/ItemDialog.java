@@ -20,6 +20,7 @@
  */
 package opentask;
 
+import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.event.*;
@@ -43,6 +44,10 @@ public class ItemDialog extends JDialog implements ActionListener {
 		c.insets = new Insets(5,5,5,5);
 		this.setLayout(grid);
 		
+		Calendar past = Calendar.getInstance();
+		past.add(Calendar.MONDAY, -1);
+		Calendar now = Calendar.getInstance();
+
 		// first row : task name
 		c.weightx = 2;
 		c.gridwidth = 1;
@@ -66,16 +71,23 @@ public class ItemDialog extends JDialog implements ActionListener {
 		JLabel lSchedDate = new JLabel("Date");
 		grid.setConstraints(lSchedDate, c);
 		add(lSchedDate);
-		JTextField tSchedDate = new JTextField(5);
-		grid.setConstraints(tSchedDate, c);
-		add(tSchedDate);
+			// Schedule Date Editor
+		JSpinner dSchedDateEditor = new JSpinner();
+		dSchedDateEditor.setModel(new SpinnerDateModel(now.getTime(), past.getTime(), null, Calendar.YEAR));
+		dSchedDateEditor.setEditor(new JSpinner.DateEditor(dSchedDateEditor, "dd.MM.yyyy"));
+		grid.setConstraints(dSchedDateEditor, c);
+		add(dSchedDateEditor);
+		
 		JLabel lSchedTime = new JLabel("Time");
 		grid.setConstraints(lSchedTime, c);
 		add(lSchedTime);
 		c.gridwidth = GridBagConstraints.REMAINDER;
-		JTextField tSchedTime = new JTextField(5);
-		grid.setConstraints(tSchedTime, c);
-		add(tSchedTime);
+
+		JSpinner dSchedTimeEditor = new JSpinner();
+		dSchedTimeEditor.setModel(new SpinnerDateModel(now.getTime(), null, null, Calendar.MINUTE));
+		dSchedTimeEditor.setEditor(new JSpinner.DateEditor(dSchedTimeEditor, "hh:mm"));
+		grid.setConstraints(dSchedTimeEditor, c);
+		add(dSchedTimeEditor);
 		// fourth row : duration
 		c.weightx = 2;
 		c.gridwidth = 1;
@@ -98,16 +110,23 @@ public class ItemDialog extends JDialog implements ActionListener {
 		JLabel lNotDate = new JLabel("Date");
 		grid.setConstraints(lNotDate, c);
 		add(lNotDate);
-		JTextField tNotDate = new JTextField(5);
-		grid.setConstraints(tNotDate, c);
-		add(tNotDate);
+			// Notification Date Editor
+		JSpinner dNoteDateEditor = new JSpinner();
+		dNoteDateEditor.setModel(new SpinnerDateModel(now.getTime(), past.getTime(), null, Calendar.YEAR));
+		dNoteDateEditor.setEditor(new JSpinner.DateEditor(dNoteDateEditor, "dd.MM.yyyy"));
+		grid.setConstraints(dNoteDateEditor, c);
+		add(dNoteDateEditor);
+
 		JLabel lNotTime = new JLabel("Time");
 		grid.setConstraints(lNotTime, c);
 		add(lNotTime);
 		c.gridwidth = GridBagConstraints.REMAINDER;
-		JTextField tNotTime = new JTextField(5);
-		grid.setConstraints(tNotTime, c);
-		add(tNotTime);
+
+		JSpinner dNoteTimeEditor = new JSpinner();
+		dNoteTimeEditor.setModel(new SpinnerDateModel(now.getTime(), null, null, Calendar.MINUTE));
+		dNoteTimeEditor.setEditor(new JSpinner.DateEditor(dNoteTimeEditor, "hh:mm"));
+		grid.setConstraints(dNoteTimeEditor, c);
+		add(dNoteTimeEditor);
 		// seventh row : nex Notification
 		c.weightx = 2;
 		c.gridwidth = 1;
