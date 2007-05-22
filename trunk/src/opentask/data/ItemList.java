@@ -21,8 +21,9 @@
 
 package opentask.data;
 
-import java.util.TreeSet;
-import java.util.Iterator;
+import java.util.*;
+
+import java.io.*;
 
 
 /**
@@ -32,6 +33,8 @@ import java.util.Iterator;
 public class ItemList {
 	private TreeSet<ActionItem> list;
 	private ItemListModel model;
+	private final String fileName = "opentask.dat";
+	private final String SEPARATOR = "#";
 	
 	public ItemList(ItemListModel model) {
 		list = new TreeSet<ActionItem>(new ActionItemComparator());
@@ -80,6 +83,113 @@ public class ItemList {
 		return list.size();
 	}
 	
+	private String writeItem(ActionItem item) {
+		String stringRep = SEPARATOR;
+		stringRep += item.getItemName() + SEPARATOR;
+		stringRep += (new Long(item.getSchedule().getTimeInMillis()).toString()) + SEPARATOR;
+		stringRep += (new Integer(item.getDuration()).toString()) + SEPARATOR;
+		stringRep += (new Long(item.getNotifyTime().getTimeInMillis()).toString()) + SEPARATOR;
+		stringRep += (new Integer(item.getNextNotification()).toString()) + SEPARATOR;
+		stringRep += item.getDescription() + SEPARATOR;
+		return stringRep;
+	}
+	
+	private void readItem(String stringRep) {
+		StringTokenizer tokenizer = new StringTokenizer(stringRep, SEPARATOR);
+		String name = "";
+		String description = "";
+		Calendar schedule = Calendar.getInstance();
+		Calendar notification = Calendar.getInstance();
+		int duration = 0;
+		int nextNotify = 0;
+		
+		if (tokenizer.hasMoreTokens())
+			name = tokenizer.nextToken();
+		if (tokenizer.hasMoreTokens())
+			schedule.setTimeInMillis((new Long(tokenizer.nextToken())).longValue());
+		if (tokenizer.hasMoreTokens())
+			duration = (new Integer(tokenizer.nextToken())).intValue();
+		if (tokenizer.hasMoreTokens())
+			notification.setTimeInMillis((new Long(tokenizer.nextToken())).longValue());
+		if (tokenizer.hasMoreTokens())
+			nextNotify = (new Integer(tokenizer.nextToken())).intValue();
+		if (tokenizer.hasMoreTokens())
+			description = tokenizer.nextToken();
+		
+		add(new ActionItem(name, schedule, notification, duration, nextNotify, description));
+	}
+	
+	public boolean save() {
+		BufferedWriter outputStream = null;
+		boolean success = true;
+		try {
+			File file = new File(fileName);
+			if (!file.exists())
+				file.createNewFile();
+			outputStream = new BufferedWriter(new FileWriter(fileName));
+			Iterator<ActionItem> it = iterator();
+			while (it.hasNext()) {
+				ActionItem item = it.next();
+				outputStream.write(writeItem(item));
+				outputStream.newLine();
+			}
+		}
+		catch (IOException e) {
+			System.err.println("Caught IOException: " +  e.getMessage());
+			success = false;
+		}
+		finally {
+			if (outputStream != null) {
+                try {
+                	outputStream.close();
+                }
+                catch (IOException e) {
+                	System.err.println("Caught IOException: " +  e.getMessage());
+                	success = false;
+                }
+			}
+		}
+		return success;
+	}
+	
+	public boolean load() {
+		BufferedReader inputStream = null;
+		boolean success = true;
+		try {
+			inputStream = new BufferedReader(new FileReader(fileName));
+			while (inputStream.ready()) {
+				String line = inputStream.readLine();
+				if (line.length() == 0) break; 
+				while (line.charAt(line.length()-1) != SEPARATOR.charAt(0))
+				{
+					String nextLine = " " + inputStream.readLine();
+					line += nextLine;
+				}
+				readItem(line);
+			}
+					
+		}
+		catch (FileNotFoundException e) {
+			System.err.println("Caught FileNotFoundException: " +  e.getMessage());
+			System.err.println("Creating new File");
+		}
+		catch (IOException e) {
+			System.err.println("Caught IOException: " +  e.getMessage());
+			success = false;
+		}
+		finally {
+            if (inputStream != null) {
+            	try {
+            		inputStream.close();
+            	}
+                catch (IOException e) {
+                	System.err.println("Caught IOException: " +  e.getMessage());
+                	success = false;
+                }
+            }
+        }
+		return success;
+	}
 	
 }
 	

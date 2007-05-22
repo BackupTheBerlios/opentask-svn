@@ -22,6 +22,7 @@
 package opentask;
 
 import javax.swing.*;
+
 import java.awt.event.*;
 import java.awt.*;
 
@@ -46,13 +47,14 @@ public class OpenTask implements ActionListener{
 	public OpenTask() {
 		model = new ItemListModel();
 		itemList = new ItemList(model);	
-		
+		if (!itemList.load())
+			JOptionPane.showMessageDialog(mainPanel, "Error: Reading data from disk was not successful!", "Disk Error", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	public void saveData() {
-		if (dirty)
-			;// save data
-		
+//		if (dirty)
+			if (!itemList.save())
+				JOptionPane.showMessageDialog(mainPanel, "Error: Writing data to disk was not successful!", "Disk Error", JOptionPane.ERROR_MESSAGE);
 	}
 	
 	private void createMenu() {
