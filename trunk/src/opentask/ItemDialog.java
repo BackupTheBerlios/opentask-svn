@@ -23,6 +23,7 @@ package opentask;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.*;
 import java.awt.event.*;
 import java.awt.*;
 
@@ -32,12 +33,29 @@ import opentask.data.*;
  * @author rassler
  *
  */
-public class ItemDialog extends JDialog implements ActionListener {
+public class ItemDialog extends JDialog implements ActionListener, ChangeListener, KeyListener {
 	static final long serialVersionUID = 1;
+	private ActionItem item;
+	private boolean dirty;
+	
+	// GUI fields
+	private JTextField tName;
+	private JSpinner dSchedDateEditor;
+	private JSpinner dSchedTimeEditor;
+	private JTextField tDuration;
+	private JSpinner dNoteDateEditor;
+	private JSpinner dNoteTimeEditor;
+	private JTextField tNextNotfy;
+	private JTextArea tDescription;
+	private JButton bCancel;
+	private JButton bOk;
 	
 	public ItemDialog(Frame owner, String title)
 	{
 		super(owner, title, true);
+		dirty = false;
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+		
 		GridBagLayout grid = new GridBagLayout();
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
@@ -56,8 +74,9 @@ public class ItemDialog extends JDialog implements ActionListener {
 		add(lName);
 		//c.weightx = 2;
 		c.gridwidth = GridBagConstraints.REMAINDER;
-		JTextField tName = new JTextField(15);
+		tName = new JTextField(15);
 		grid.setConstraints(tName, c);
+		tName.addKeyListener(this);
 		add(tName);
 		// second row : schedule label
 		c.weightx = 4;
@@ -72,10 +91,11 @@ public class ItemDialog extends JDialog implements ActionListener {
 		grid.setConstraints(lSchedDate, c);
 		add(lSchedDate);
 			// Schedule Date Editor
-		JSpinner dSchedDateEditor = new JSpinner();
+		dSchedDateEditor = new JSpinner();
 		dSchedDateEditor.setModel(new SpinnerDateModel(now.getTime(), past.getTime(), null, Calendar.YEAR));
 		dSchedDateEditor.setEditor(new JSpinner.DateEditor(dSchedDateEditor, "dd.MM.yyyy"));
 		grid.setConstraints(dSchedDateEditor, c);
+		dSchedDateEditor.addChangeListener(this);
 		add(dSchedDateEditor);
 		
 		JLabel lSchedTime = new JLabel("Time");
@@ -83,10 +103,11 @@ public class ItemDialog extends JDialog implements ActionListener {
 		add(lSchedTime);
 		c.gridwidth = GridBagConstraints.REMAINDER;
 
-		JSpinner dSchedTimeEditor = new JSpinner();
+		dSchedTimeEditor = new JSpinner();
 		dSchedTimeEditor.setModel(new SpinnerDateModel(now.getTime(), null, null, Calendar.MINUTE));
 		dSchedTimeEditor.setEditor(new JSpinner.DateEditor(dSchedTimeEditor, "hh:mm"));
 		grid.setConstraints(dSchedTimeEditor, c);
+		dSchedTimeEditor.addChangeListener(this);
 		add(dSchedTimeEditor);
 		// fourth row : duration
 		c.weightx = 2;
@@ -95,8 +116,9 @@ public class ItemDialog extends JDialog implements ActionListener {
 		grid.setConstraints(lDuration, c);
 		add(lDuration);
 		c.gridwidth = GridBagConstraints.REMAINDER;
-		JTextField tDuration = new JTextField(5);
+		tDuration = new JTextField(5);
 		grid.setConstraints(tDuration, c);
+		tDuration.addKeyListener(this);
 		add(tDuration);
 		// fifth row : notification label
 		c.weightx = 4;
@@ -111,10 +133,11 @@ public class ItemDialog extends JDialog implements ActionListener {
 		grid.setConstraints(lNotDate, c);
 		add(lNotDate);
 			// Notification Date Editor
-		JSpinner dNoteDateEditor = new JSpinner();
+		dNoteDateEditor = new JSpinner();
 		dNoteDateEditor.setModel(new SpinnerDateModel(now.getTime(), past.getTime(), null, Calendar.YEAR));
 		dNoteDateEditor.setEditor(new JSpinner.DateEditor(dNoteDateEditor, "dd.MM.yyyy"));
 		grid.setConstraints(dNoteDateEditor, c);
+		dNoteDateEditor.addChangeListener(this);
 		add(dNoteDateEditor);
 
 		JLabel lNotTime = new JLabel("Time");
@@ -122,10 +145,11 @@ public class ItemDialog extends JDialog implements ActionListener {
 		add(lNotTime);
 		c.gridwidth = GridBagConstraints.REMAINDER;
 
-		JSpinner dNoteTimeEditor = new JSpinner();
+		dNoteTimeEditor = new JSpinner();
 		dNoteTimeEditor.setModel(new SpinnerDateModel(now.getTime(), null, null, Calendar.MINUTE));
 		dNoteTimeEditor.setEditor(new JSpinner.DateEditor(dNoteTimeEditor, "hh:mm"));
 		grid.setConstraints(dNoteTimeEditor, c);
+		dNoteTimeEditor.addChangeListener(this);
 		add(dNoteTimeEditor);
 		// seventh row : nex Notification
 		c.weightx = 2;
@@ -134,8 +158,9 @@ public class ItemDialog extends JDialog implements ActionListener {
 		grid.setConstraints(lNextNotify, c);
 		add(lNextNotify);
 		c.gridwidth = GridBagConstraints.REMAINDER;
-		JTextField tNextNotfy = new JTextField(5);
+		tNextNotfy = new JTextField(5);
 		grid.setConstraints(tNextNotfy, c);
+		tNextNotfy.addKeyListener(this);
 		add(tNextNotfy);
 		// eightth row : description
 		c.weightx = 4;
@@ -146,10 +171,11 @@ public class ItemDialog extends JDialog implements ActionListener {
 		// nineth row : description field
 		c.weightx = 4;
 		c.gridwidth = GridBagConstraints.REMAINDER;
-		JTextArea tDescription = new JTextArea(5,30);
+		tDescription = new JTextArea(5,30);
 		tDescription.setBorder(new EtchedBorder());
 		tDescription.setLineWrap(true);
 		grid.setConstraints(tDescription, c);
+		tDescription.addKeyListener(this);
 		add(tDescription);
 		
 		// tenth row: buttons
@@ -159,12 +185,14 @@ public class ItemDialog extends JDialog implements ActionListener {
 		grid.setConstraints(lNone, c);
 		add(lNone);
 		c.weightx = 1;
-		JButton bOk = new JButton("Ok");
+		bOk = new JButton("Ok");
 		grid.setConstraints(bOk, c);
+		bOk.addActionListener(this);
 		add(bOk);
 		c.gridwidth = GridBagConstraints.REMAINDER;
-		JButton bCancel = new JButton("Cancel");
+		bCancel = new JButton("Cancel");
 		grid.setConstraints(bCancel, c);
+		bCancel.addActionListener(this);
 		add(bCancel);
 
 		pack();
@@ -175,11 +203,70 @@ public class ItemDialog extends JDialog implements ActionListener {
 	}
 
 	public ActionItem getData() {
-		return new ActionItem(); //FIXME
+		return item;
+	}
+	
+	private boolean checkFields() {
+		if (tName.getText().length() == 0)
+		{
+			JOptionPane.showMessageDialog(this, "A name for the task is mandatory!", "Name needed!", JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+		return true;
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-        
+		Object obj = e.getSource();
+		if (obj.equals(bCancel))
+			setVisible(false);
+		else if (obj.equals(bOk))
+		{
+			if (dirty) {
+				if (checkFields())
+				{
+					Calendar schedule = Calendar.getInstance();
+					Calendar notification = Calendar.getInstance();
+					JSpinner.DateEditor editor;
+					SpinnerDateModel dModel;
+					SpinnerDateModel tModel;
+					
+					// TODO: implement a more current and straightforward date / time handling
+					editor = (JSpinner.DateEditor)dSchedDateEditor.getEditor();
+					dModel = editor.getModel();
+					editor = (JSpinner.DateEditor)dSchedTimeEditor.getEditor();
+					tModel = editor.getModel();
+					Date sched = new Date(dModel.getDate().getYear(), dModel.getDate().getMonth(), dModel.getDate().getDate(), tModel.getDate().getHours(), tModel.getDate().getMinutes(), tModel.getDate().getSeconds());
+					schedule.setTime(sched);
+					editor = (JSpinner.DateEditor)dNoteDateEditor.getEditor();
+					dModel = editor.getModel();
+					editor = (JSpinner.DateEditor)dNoteTimeEditor.getEditor();
+					tModel = editor.getModel();
+					Date note = new Date(dModel.getDate().getYear(), dModel.getDate().getMonth(), dModel.getDate().getDate(), tModel.getDate().getHours(), tModel.getDate().getMinutes(), tModel.getDate().getSeconds());
+					notification.setTime(note);
+					
+					item = new ActionItem(tName.getText(), schedule, notification, 0, 0, tDescription.getText());
+					setVisible(false);
+				}
+			}
+			else setVisible(false);
+		}
     }
+
+	// Listeners to detect modification of data
+	public void stateChanged(ChangeEvent e) {
+		dirty = true;
+	}
+
+	public void keyPressed(KeyEvent e) {
+		
+	}
 	
+	public void keyReleased(KeyEvent e) {
+		
+	}
+	
+	public void keyTyped(KeyEvent e) {
+		dirty = true;
+	}
 }
+

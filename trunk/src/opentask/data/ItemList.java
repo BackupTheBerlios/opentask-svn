@@ -31,48 +31,52 @@ import java.util.Iterator;
  */
 public class ItemList {
 	private TreeSet<ActionItem> list;
+	private ItemListModel model;
 	
-	public ItemList() {
+	public ItemList(ItemListModel model) {
 		list = new TreeSet<ActionItem>(new ActionItemComparator());
+		this.model = model;
 	}
 	
-	boolean add(ActionItem item) {
-		return list.add(item);
+	public boolean add(ActionItem item) {
+		boolean success = list.add(item);
+		if (success) model.addItem(item);
+		return success;
 	}
 
-	void clear() {
+	public void clear() {
 		list.clear();
 	}
 
-	boolean contains(ActionItem item) {
+	public boolean contains(ActionItem item) {
 		return list.contains(item);
 	}
 	
-	Iterator<ActionItem> descendingIterator() {
+	public Iterator<ActionItem> descendingIterator() {
 		return list.descendingIterator();
 	}
 	
-	ActionItem first() {
+	public ActionItem first() {
 		return list.first();
 	}
 
-	boolean isEmpty() {
+	public boolean isEmpty() {
 		return list.isEmpty();
 	}
 	
-	Iterator<ActionItem> iterator() {
+	public Iterator<ActionItem> iterator() {
 		return list.iterator();
 	}
 	
-	ActionItem last() {
+	public ActionItem last() {
 		return list.last();
 	}
 	
-	boolean remove(ActionItem item) {
+	public boolean remove(ActionItem item) {
 		return list.remove(item);
 	}
 	
-	int size() {
+	public int size() {
 		return list.size();
 	}
 	

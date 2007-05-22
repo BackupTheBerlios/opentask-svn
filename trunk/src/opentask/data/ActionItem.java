@@ -48,16 +48,19 @@ public class ActionItem {
 		notifyTime = Calendar.getInstance();
 	}
 	
-	public ActionItem(Calendar schedule, Calendar notifyTime, int duration, int nextNotification) {
+	public ActionItem(String itemName, Calendar schedule, Calendar notifyTime, int duration, int nextNotification, String description) {
 		super();
+		this.itemName = itemName;
 		this.schedule = schedule;
 		this.notifyTime = notifyTime;
 		this.duration = duration;
 		this.nextNotification = nextNotification;
+		this.description = description;
 	}
 	
-	public ActionItem(Calendar schedule) {
+	public ActionItem(String itemName, Calendar schedule) {
 		super();
+		this.itemName = itemName;
 		this.schedule = schedule;
 		notifyTime = schedule;
 		duration = 0;

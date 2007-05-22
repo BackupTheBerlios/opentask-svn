@@ -23,6 +23,7 @@ package opentask;
 
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.*;
 
 import opentask.data.*;
 
@@ -39,13 +40,18 @@ public class OpenTask implements ActionListener{
 	
 	// important Data 
 	private boolean dirty;
+	private ItemList itemList;
+	private ItemListModel model;
 
 	public OpenTask() {
-		if (dirty)
-			;// save data
+		model = new ItemListModel();
+		itemList = new ItemList(model);	
+		
 	}
 	
 	public void saveData() {
+		if (dirty)
+			;// save data
 		
 	}
 	
@@ -67,7 +73,7 @@ public class OpenTask implements ActionListener{
         menu = new JMenu("Task");
 		menuItem = new JMenuItem("New", KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-        menuItem.addActionListener(new ItemDialogAction(null, "New Task"));
+        menuItem.addActionListener(new ItemDialogAction(null, "New Task", itemList));
         menu.add(menuItem);
 		menuItem = new JMenuItem("Edit", KeyEvent.VK_E);
         menu.add(menuItem);
@@ -88,11 +94,11 @@ public class OpenTask implements ActionListener{
 		mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		
-		
-		table = new JTable(new ItemListModel());
+		table = new JTable(model);
 		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
+		mainPanel.setLayout(new BorderLayout());
 		mainPanel.add(scrollPane);
 	}
 	
@@ -102,8 +108,8 @@ public class OpenTask implements ActionListener{
 		JFrame window = new JFrame("OpenTask");
 
 		OpenTask task = new OpenTask();
-		task.createMenu();
 		task.createMainPane();
+		task.createMenu();	
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		window.setJMenuBar(task.menuBar);
 		window.setContentPane(task.mainPanel);
@@ -150,18 +156,24 @@ class ItemDialogAction implements ActionListener {
 	JFrame window;
 	String title;
 	ActionItem item;
-	public ItemDialogAction(JFrame window, String title) {
+	ItemList itmList;
+	public ItemDialogAction(JFrame window, String title, ItemList list) {
 		this.window = window;
 		this.title = title;
+		this.itmList = list;
 	}
-	public ItemDialogAction(JFrame window, String title, ActionItem item) {
+	public ItemDialogAction(JFrame window, String title, ActionItem item, ItemList list) {
 		this.window = window;
 		this.title = title;
 		this.item = item;
+		this.itmList = list;
 	}
 	public void actionPerformed(ActionEvent e) {
 		ItemDialog dialog = new ItemDialog(window, title);
 		if (item != null) dialog.setData(item);
 		dialog.setVisible(true);
+		ActionItem itm = dialog.getData();
+		if (itm != null) 
+			itmList.add(itm);
 	}
 }

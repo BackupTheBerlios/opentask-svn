@@ -57,8 +57,9 @@ public class ItemListModel extends AbstractTableModel {
     public void setValueAt(ActionItem obj, int row) {
     	line = new String[columnNames.length];
     	Date date = obj.getSchedule().getTime();
-    	line[0] = date.toString();
-    	line[1] = date.toString();
+    	// TODO: implement a more current and straightforward date / time handling
+    	line[0] = (new Integer(date.getDate()).toString()) + "." + (new Integer(date.getMonth()+1).toString()) + "." + (new Integer(date.getYear()+1900).toString()); 
+    	line[1] = (new Integer(date.getHours()).toString()) + ":" + (new Integer(date.getMinutes()).toString());
     	line[2] = obj.getItemName();
     	line[3] = new Integer(obj.getDuration()).toString();
     	line[4] = obj.getDescription();
@@ -73,6 +74,9 @@ public class ItemListModel extends AbstractTableModel {
     		data.add(row, line);
     		fireTableRowsInserted(row-1, row);
     	}
-    	    	
+    }
+    
+    public void addItem(ActionItem item) {
+    	setValueAt(item, data.size());
     }
 }
