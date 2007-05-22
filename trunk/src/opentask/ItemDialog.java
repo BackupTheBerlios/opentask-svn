@@ -229,20 +229,24 @@ public class ItemDialog extends JDialog implements ActionListener, ChangeListene
 					JSpinner.DateEditor editor;
 					SpinnerDateModel dModel;
 					SpinnerDateModel tModel;
+					Calendar dCal = Calendar.getInstance();
+					Calendar tCal = Calendar.getInstance();
 					
-					// TODO: implement a more current and straightforward date / time handling
 					editor = (JSpinner.DateEditor)dSchedDateEditor.getEditor();
 					dModel = editor.getModel();
+					dCal.setTime(dModel.getDate());
 					editor = (JSpinner.DateEditor)dSchedTimeEditor.getEditor();
 					tModel = editor.getModel();
-					Date sched = new Date(dModel.getDate().getYear(), dModel.getDate().getMonth(), dModel.getDate().getDate(), tModel.getDate().getHours(), tModel.getDate().getMinutes(), tModel.getDate().getSeconds());
-					schedule.setTime(sched);
+					tCal.setTime(tModel.getDate());
+					schedule.set(dCal.get(Calendar.YEAR), dCal.get(Calendar.MONTH), dCal.get(Calendar.DAY_OF_MONTH), tCal.get(Calendar.HOUR_OF_DAY), tCal.get(Calendar.MINUTE), 0);
+					
 					editor = (JSpinner.DateEditor)dNoteDateEditor.getEditor();
 					dModel = editor.getModel();
+					dCal.setTime(dModel.getDate());
 					editor = (JSpinner.DateEditor)dNoteTimeEditor.getEditor();
 					tModel = editor.getModel();
-					Date note = new Date(dModel.getDate().getYear(), dModel.getDate().getMonth(), dModel.getDate().getDate(), tModel.getDate().getHours(), tModel.getDate().getMinutes(), tModel.getDate().getSeconds());
-					notification.setTime(note);
+					tCal.setTime(tModel.getDate());
+					notification.set(dCal.get(Calendar.YEAR), dCal.get(Calendar.MONTH), dCal.get(Calendar.DAY_OF_MONTH), tCal.get(Calendar.HOUR), tCal.get(Calendar.MINUTE), 0);
 					
 					item = new ActionItem(tName.getText(), schedule, notification, 0, 0, tDescription.getText());
 					setVisible(false);

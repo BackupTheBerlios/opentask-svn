@@ -22,7 +22,7 @@ package opentask.data;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.Vector;
-import java.util.Date;
+import java.util.Calendar;
 
 /**
  * @author rassler
@@ -56,10 +56,9 @@ public class ItemListModel extends AbstractTableModel {
     
     public void setValueAt(ActionItem obj, int row) {
     	line = new String[columnNames.length];
-    	Date date = obj.getSchedule().getTime();
-    	// TODO: implement a more current and straightforward date / time handling
-    	line[0] = (new Integer(date.getDate()).toString()) + "." + (new Integer(date.getMonth()+1).toString()) + "." + (new Integer(date.getYear()+1900).toString()); 
-    	line[1] = (new Integer(date.getHours()).toString()) + ":" + (new Integer(date.getMinutes()).toString());
+    	Calendar date = obj.getSchedule();
+    	line[0] = (new Integer(date.get(Calendar.DAY_OF_MONTH)).toString()) + "." + (new Integer(date.get(Calendar.MONTH)+1).toString()) + "." + (new Integer(date.get(Calendar.YEAR)).toString()); 
+    	line[1] = (new Integer(date.get(Calendar.HOUR_OF_DAY)).toString()) + ":" + (new Integer(date.get(Calendar.MINUTE)).toString());
     	line[2] = obj.getItemName();
     	line[3] = new Integer(obj.getDuration()).toString();
     	line[4] = obj.getDescription();
