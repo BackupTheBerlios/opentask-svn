@@ -33,7 +33,7 @@ import java.io.*;
 public class ItemList {
 	private TreeSet<ActionItem> list;
 	private ItemListModel model;
-	private final String fileName = "opentask.dat";
+	private final String fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "opentask.dat";
 	private final String SEPARATOR = "#";
 	
 	/**

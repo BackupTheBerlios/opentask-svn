@@ -127,7 +127,7 @@ public class OpenTask implements ActionListener{
 		OpenTask task = new OpenTask();
 		task.createMainPane();
 		task.createMenu();	
-		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		window.setJMenuBar(task.menuBar);
 		window.setContentPane(task.mainPanel);
 		
