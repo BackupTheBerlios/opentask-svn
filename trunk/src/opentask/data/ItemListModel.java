@@ -29,7 +29,7 @@ import java.util.Calendar;
  *
  */
 public class ItemListModel extends AbstractTableModel {
-	String[] columnNames = {"Date", "Time", "Description", "Duration", "Remarks"};
+	String[] columnNames = {"Task Date", "Task Time", "Description", "Duration", "Notify Date", "Notify Time", "Remarks"};
 	String[] line;
 	Vector<String[]> data;
 	static final long serialVersionUID = 1;
@@ -80,7 +80,10 @@ public class ItemListModel extends AbstractTableModel {
     	line[1] = (new Integer(date.get(Calendar.HOUR_OF_DAY)).toString()) + ":" + (new Integer(date.get(Calendar.MINUTE)).toString());
     	line[2] = obj.getItemName();
     	line[3] = new Integer(obj.getDuration()).toString();
-    	line[4] = obj.getDescription();
+    	date = obj.getNotifyTime();
+    	line[4] = (new Integer(date.get(Calendar.DAY_OF_MONTH)).toString()) + "." + (new Integer(date.get(Calendar.MONTH)+1).toString()) + "." + (new Integer(date.get(Calendar.YEAR)).toString()); 
+    	line[5] = (new Integer(date.get(Calendar.HOUR_OF_DAY)).toString()) + ":" + (new Integer(date.get(Calendar.MINUTE)).toString());
+    	line[6] = obj.getDescription();
     	
     	if (row > data.size() || row < 0)
     	{

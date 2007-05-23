@@ -25,6 +25,8 @@ import javax.swing.*;
 
 import java.awt.event.*;
 import java.awt.*;
+import java.util.Iterator;
+import java.util.Calendar;
 
 import opentask.data.*;
 
@@ -35,14 +37,18 @@ import opentask.data.*;
 public class OpenTask implements ActionListener{
 
 	// important GUI elements
-	JPanel mainPanel;
+	public JPanel mainPanel;
 	JMenuBar menuBar;
 	JTable table;
+	Timer timer;
 	
 	// important Data 
 	private boolean dirty;
 	private ItemList itemList;
 	private ItemListModel model;
+	
+	// constants
+	private final int DELAY = 1000;	// milliseconds
 
 	/**
 	 * 
@@ -52,6 +58,17 @@ public class OpenTask implements ActionListener{
 		itemList = new ItemList(model);	
 		if (!itemList.load())
 			JOptionPane.showMessageDialog(mainPanel, "Error: Reading data from disk was not successful!", "Disk Error", JOptionPane.ERROR_MESSAGE);
+		TimerAction timerListener = new TimerAction(this, itemList);
+		timer = new Timer(DELAY, timerListener);
+		timer.start();
+	}
+	
+	/**
+	 * @param item
+	 */
+	public void notifyTask(ActionItem item) {
+		NotifyDialog dialog = new NotifyDialog(null, "Notification", item, itemList);
+		dialog.setVisible(true);
 	}
 	
 	/**
@@ -226,5 +243,43 @@ class ItemDialogAction implements ActionListener {
 		ActionItem itm = dialog.getData();
 		if (itm != null) 
 			itmList.add(itm);
+	}
+}
+
+/**
+ * @author rassler
+ *
+ */
+class TimerAction implements ActionListener {
+	private OpenTask app;
+	private ItemList list;
+	/**
+	 * @param app
+	 * @param list
+	 */
+	public TimerAction(Object app, ItemList list) {
+		this.app = (OpenTask)app;
+		this.list = list;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	public void actionPerformed(ActionEvent e) {
+		Calendar now = Calendar.getInstance();
+		Iterator<ActionItem> it = list.iterator();
+		while (it.hasNext()) {
+			ActionItem item = it.next();
+			Calendar notify = item.getNotifyTime();
+			if (notify.get(Calendar.YEAR) == now.get(Calendar.YEAR)
+					&& notify.get(Calendar.MONTH) == now.get(Calendar.MONTH)
+					&& notify.get(Calendar.DAY_OF_MONTH) == now.get(Calendar.DAY_OF_MONTH)
+					&& notify.get(Calendar.HOUR_OF_DAY) == now.get(Calendar.HOUR_OF_DAY)
+					&& notify.get(Calendar.MINUTE) == now.get(Calendar.MINUTE)
+					)
+			{
+				app.notifyTask(item);
+			}
+		}
 	}
 }

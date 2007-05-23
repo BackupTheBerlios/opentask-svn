@@ -65,7 +65,10 @@ public class ActionItem {
 		this.schedule = schedule;
 		this.notifyTime = notifyTime;
 		this.duration = duration;
-		this.nextNotification = nextNotification;
+		if (nextNotification == 0)
+			this.nextNotification = DEFAULT_DELAY;
+		else
+			this.nextNotification = nextNotification;
 		this.description = description;
 	}
 	

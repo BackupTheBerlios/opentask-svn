@@ -109,7 +109,7 @@ public class ItemDialog extends JDialog implements ActionListener, ChangeListene
 
 		dSchedTimeEditor = new JSpinner();
 		dSchedTimeEditor.setModel(new SpinnerDateModel(now.getTime(), null, null, Calendar.MINUTE));
-		dSchedTimeEditor.setEditor(new JSpinner.DateEditor(dSchedTimeEditor, "hh:mm"));
+		dSchedTimeEditor.setEditor(new JSpinner.DateEditor(dSchedTimeEditor, "HH:mm"));
 		grid.setConstraints(dSchedTimeEditor, c);
 		dSchedTimeEditor.addChangeListener(this);
 		add(dSchedTimeEditor);
@@ -151,7 +151,7 @@ public class ItemDialog extends JDialog implements ActionListener, ChangeListene
 
 		dNoteTimeEditor = new JSpinner();
 		dNoteTimeEditor.setModel(new SpinnerDateModel(now.getTime(), null, null, Calendar.MINUTE));
-		dNoteTimeEditor.setEditor(new JSpinner.DateEditor(dNoteTimeEditor, "hh:mm"));
+		dNoteTimeEditor.setEditor(new JSpinner.DateEditor(dNoteTimeEditor, "HH:mm"));
 		grid.setConstraints(dNoteTimeEditor, c);
 		dNoteTimeEditor.addChangeListener(this);
 		add(dNoteTimeEditor);
@@ -262,7 +262,7 @@ public class ItemDialog extends JDialog implements ActionListener, ChangeListene
 					editor = (JSpinner.DateEditor)dNoteTimeEditor.getEditor();
 					tModel = editor.getModel();
 					tCal.setTime(tModel.getDate());
-					notification.set(dCal.get(Calendar.YEAR), dCal.get(Calendar.MONTH), dCal.get(Calendar.DAY_OF_MONTH), tCal.get(Calendar.HOUR), tCal.get(Calendar.MINUTE), 0);
+					notification.set(dCal.get(Calendar.YEAR), dCal.get(Calendar.MONTH), dCal.get(Calendar.DAY_OF_MONTH), tCal.get(Calendar.HOUR_OF_DAY), tCal.get(Calendar.MINUTE), 0);
 					
 					item = new ActionItem(tName.getText(), schedule, notification, 0, 0, tDescription.getText());
 					setVisible(false);
