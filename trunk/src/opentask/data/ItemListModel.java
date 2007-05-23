@@ -103,4 +103,13 @@ public class ItemListModel extends AbstractTableModel {
     public void addItem(ActionItem item) {
     	setValueAt(item, data.size());
     }
+    
+    public void clear() {
+    	fireTableRowsDeleted(1, data.size());
+    }
+    
+    public void remove(int index) {
+    	data.remove(index-1);
+    	fireTableRowsDeleted(index-1, index);
+    }
 }

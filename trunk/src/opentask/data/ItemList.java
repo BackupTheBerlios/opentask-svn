@@ -59,7 +59,7 @@ public class ItemList {
 	 */
 	public void clear() {
 		list.clear();
-		model.fireTableRowsDeleted(1, model.getRowCount());
+		model.clear();
 	}
 
 	/**
@@ -110,9 +110,16 @@ public class ItemList {
 	 * @return
 	 */
 	public boolean remove(ActionItem item) {
+		Iterator<ActionItem> it = iterator();
+		int count = 0;
+		while (it.hasNext()) {
+			ActionItem check = it.next();
+			++count;
+			if (check.equals(item))
+				break;
+		}
 		boolean success = list.remove(item);
-		model.fireTableRowsDeleted(model.getRowCount()-1, model.getRowCount());
-		model.fireTableRowsUpdated(1, model.getRowCount());
+		model.remove(count);
 		return success;
 	}
 	
