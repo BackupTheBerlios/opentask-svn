@@ -40,6 +40,12 @@ public class NotifyDialog extends JDialog implements ActionListener{
 	JButton bDone;
 	JButton bLater;
 	
+	/**
+	 * @param owner
+	 * @param title
+	 * @param itm
+	 * @param list
+	 */
 	public NotifyDialog(Frame owner, String title, ActionItem itm, ItemList list) {
 		super(owner, title, true);
 		item = itm;
@@ -71,6 +77,9 @@ public class NotifyDialog extends JDialog implements ActionListener{
 		pack();
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(bDone)) {
 			itemList.remove(item);
