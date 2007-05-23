@@ -44,6 +44,9 @@ public class OpenTask implements ActionListener{
 	private ItemList itemList;
 	private ItemListModel model;
 
+	/**
+	 * 
+	 */
 	public OpenTask() {
 		model = new ItemListModel();
 		itemList = new ItemList(model);	
@@ -51,12 +54,18 @@ public class OpenTask implements ActionListener{
 			JOptionPane.showMessageDialog(mainPanel, "Error: Reading data from disk was not successful!", "Disk Error", JOptionPane.ERROR_MESSAGE);
 	}
 	
+	/**
+	 * 
+	 */
 	public void saveData() {
 //		if (dirty)
 			if (!itemList.save())
 				JOptionPane.showMessageDialog(mainPanel, "Error: Writing data to disk was not successful!", "Disk Error", JOptionPane.ERROR_MESSAGE);
 	}
 	
+	/**
+	 * 
+	 */
 	private void createMenu() {
 		JMenu menu;
 		JMenuItem menuItem;
@@ -92,6 +101,9 @@ public class OpenTask implements ActionListener{
         menuBar.add(menu);
 	}
 	
+	/**
+	 * 
+	 */
 	private void createMainPane() {
 		mainPanel = new JPanel();
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
@@ -105,6 +117,9 @@ public class OpenTask implements ActionListener{
 	}
 	
 	
+	/**
+	 * 
+	 */
 	private static void createAndShowGUI() {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		JFrame window = new JFrame("OpenTask");
@@ -134,42 +149,76 @@ public class OpenTask implements ActionListener{
         });
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent e) {
 		
     }
+	/**
+	 * @param e
+	 */
 	public void windowClosing(WindowEvent e) {		
 		saveData();
 	}
 	
 }
 
+/**
+ * @author rassler
+ *
+ */
 class CloseAction implements ActionListener {
 	Object app;
+	/**
+	 * @param app
+	 */
 	public CloseAction(Object app) {
 		this.app = app;
 	}
+    /* (non-Javadoc)
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent e) {
     	if (app instanceof OpenTask) ((OpenTask)app).saveData();
         System.exit(0);
     }
 }
 
+/**
+ * @author rassler
+ *
+ */
 class ItemDialogAction implements ActionListener {
 	JFrame window;
 	String title;
 	ActionItem item;
 	ItemList itmList;
+	/**
+	 * @param window
+	 * @param title
+	 * @param list
+	 */
 	public ItemDialogAction(JFrame window, String title, ItemList list) {
 		this.window = window;
 		this.title = title;
 		this.itmList = list;
 	}
+	/**
+	 * @param window
+	 * @param title
+	 * @param item
+	 * @param list
+	 */
 	public ItemDialogAction(JFrame window, String title, ActionItem item, ItemList list) {
 		this.window = window;
 		this.title = title;
 		this.item = item;
 		this.itmList = list;
 	}
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent e) {
 		ItemDialog dialog = new ItemDialog(window, title);
 		if (item != null) dialog.setData(item);

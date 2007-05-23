@@ -50,6 +50,10 @@ public class ItemDialog extends JDialog implements ActionListener, ChangeListene
 	private JButton bCancel;
 	private JButton bOk;
 	
+	/**
+	 * @param owner
+	 * @param title
+	 */
 	public ItemDialog(Frame owner, String title)
 	{
 		super(owner, title, true);
@@ -198,14 +202,23 @@ public class ItemDialog extends JDialog implements ActionListener, ChangeListene
 		pack();
 	}
 	
+	/**
+	 * @param item
+	 */
 	public void setData(ActionItem item) {
 		
 	}
 
+	/**
+	 * @return
+	 */
 	public ActionItem getData() {
 		return item;
 	}
 	
+	/**
+	 * @return
+	 */
 	private boolean checkFields() {
 		if (tName.getText().length() == 0)
 		{
@@ -215,6 +228,9 @@ public class ItemDialog extends JDialog implements ActionListener, ChangeListene
 		return true;
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		if (obj.equals(bCancel))
@@ -257,18 +273,30 @@ public class ItemDialog extends JDialog implements ActionListener, ChangeListene
     }
 
 	// Listeners to detect modification of data
+	/* (non-Javadoc)
+	 * @see javax.swing.event.ChangeListener#stateChanged(javax.swing.event.ChangeEvent)
+	 */
 	public void stateChanged(ChangeEvent e) {
 		dirty = true;
 	}
 
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+	 */
 	public void keyPressed(KeyEvent e) {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+	 */
 	public void keyReleased(KeyEvent e) {
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+	 */
 	public void keyTyped(KeyEvent e) {
 		dirty = true;
 	}

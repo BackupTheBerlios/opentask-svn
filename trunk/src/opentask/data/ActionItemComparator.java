@@ -28,10 +28,16 @@ import java.util.Comparator;
  *
  */
 public class ActionItemComparator implements Comparator<ActionItem> {
+	/* (non-Javadoc)
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	 */
 	public int compare(ActionItem a1, ActionItem a2) {
 		return a1.getSchedule().compareTo(a2.getSchedule());
 	}
     
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
 	public boolean equals(Object obj) {
 		return obj.equals(this);
 	}

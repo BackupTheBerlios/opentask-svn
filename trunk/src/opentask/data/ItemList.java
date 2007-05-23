@@ -36,53 +36,93 @@ public class ItemList {
 	private final String fileName = "opentask.dat";
 	private final String SEPARATOR = "#";
 	
+	/**
+	 * @param model
+	 */
 	public ItemList(ItemListModel model) {
 		list = new TreeSet<ActionItem>(new ActionItemComparator());
 		this.model = model;
 	}
 	
+	/**
+	 * @param item
+	 * @return
+	 */
 	public boolean add(ActionItem item) {
 		boolean success = list.add(item);
 		if (success) model.addItem(item);
 		return success;
 	}
 
+	/**
+	 * 
+	 */
 	public void clear() {
 		list.clear();
 	}
 
+	/**
+	 * @param item
+	 * @return
+	 */
 	public boolean contains(ActionItem item) {
 		return list.contains(item);
 	}
 	
+	/**
+	 * @return
+	 */
 	public Iterator<ActionItem> descendingIterator() {
 		return list.descendingIterator();
 	}
 	
+	/**
+	 * @return
+	 */
 	public ActionItem first() {
 		return list.first();
 	}
 
+	/**
+	 * @return
+	 */
 	public boolean isEmpty() {
 		return list.isEmpty();
 	}
 	
+	/**
+	 * @return
+	 */
 	public Iterator<ActionItem> iterator() {
 		return list.iterator();
 	}
 	
+	/**
+	 * @return
+	 */
 	public ActionItem last() {
 		return list.last();
 	}
 	
+	/**
+	 * @param item
+	 * @return
+	 */
 	public boolean remove(ActionItem item) {
 		return list.remove(item);
 	}
 	
+	/**
+	 * @return
+	 */
 	public int size() {
 		return list.size();
 	}
 	
+	/**
+	 * @param item
+	 * @return
+	 */
 	private String writeItem(ActionItem item) {
 		String stringRep = SEPARATOR;
 		stringRep += item.getItemName() + SEPARATOR;
@@ -94,6 +134,9 @@ public class ItemList {
 		return stringRep;
 	}
 	
+	/**
+	 * @param stringRep
+	 */
 	private void readItem(String stringRep) {
 		StringTokenizer tokenizer = new StringTokenizer(stringRep, SEPARATOR);
 		String name = "";
@@ -119,6 +162,9 @@ public class ItemList {
 		add(new ActionItem(name, schedule, notification, duration, nextNotify, description));
 	}
 	
+	/**
+	 * @return
+	 */
 	public boolean save() {
 		BufferedWriter outputStream = null;
 		boolean success = true;
@@ -152,6 +198,9 @@ public class ItemList {
 		return success;
 	}
 	
+	/**
+	 * @return
+	 */
 	public boolean load() {
 		BufferedReader inputStream = null;
 		boolean success = true;

@@ -34,26 +34,45 @@ public class ItemListModel extends AbstractTableModel {
 	Vector<String[]> data;
 	static final long serialVersionUID = 1;
 	
+	/**
+	 * 
+	 */
 	public ItemListModel() {
 		data = new Vector<String[]>();
 	}
 	
+	/* (non-Javadoc)
+	 * @see javax.swing.table.TableModel#getColumnCount()
+	 */
 	public int getColumnCount() {
         return columnNames.length;
     }
 
+    /* (non-Javadoc)
+     * @see javax.swing.table.TableModel#getRowCount()
+     */
     public int getRowCount() {
         return data.size();
     }
 
+    /* (non-Javadoc)
+     * @see javax.swing.table.AbstractTableModel#getColumnName(int)
+     */
     public String getColumnName(int col) {
         return columnNames[col];
     }
 
+    /* (non-Javadoc)
+     * @see javax.swing.table.TableModel#getValueAt(int, int)
+     */
     public Object getValueAt(int row, int col) {
         return (data.elementAt(row))[col];
     }
     
+    /**
+     * @param obj
+     * @param row
+     */
     public void setValueAt(ActionItem obj, int row) {
     	line = new String[columnNames.length];
     	Calendar date = obj.getSchedule();
@@ -75,6 +94,9 @@ public class ItemListModel extends AbstractTableModel {
     	}
     }
     
+    /**
+     * @param item
+     */
     public void addItem(ActionItem item) {
     	setValueAt(item, data.size());
     }

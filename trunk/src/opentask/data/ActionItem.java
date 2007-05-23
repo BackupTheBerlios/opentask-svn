@@ -42,12 +42,23 @@ public class ActionItem {
 	public static int WEEK = DAY * 7;
 	public static int DEFAULT_DELAY = 5 * MINUTE;
 	
+	/**
+	 * 
+	 */
 	public ActionItem() {
 		super();
 		schedule = Calendar.getInstance();
 		notifyTime = Calendar.getInstance();
 	}
 	
+	/**
+	 * @param itemName
+	 * @param schedule
+	 * @param notifyTime
+	 * @param duration
+	 * @param nextNotification
+	 * @param description
+	 */
 	public ActionItem(String itemName, Calendar schedule, Calendar notifyTime, int duration, int nextNotification, String description) {
 		super();
 		this.itemName = itemName;
@@ -58,6 +69,10 @@ public class ActionItem {
 		this.description = description;
 	}
 	
+	/**
+	 * @param itemName
+	 * @param schedule
+	 */
 	public ActionItem(String itemName, Calendar schedule) {
 		super();
 		this.itemName = itemName;
@@ -67,50 +82,86 @@ public class ActionItem {
 		nextNotification = DEFAULT_DELAY;
 	}
 	
+	/**
+	 * @return
+	 */
 	public int getDuration() {
 		return duration;
 	}
 	
+	/**
+	 * @param duration
+	 */
 	public void setDuration(int duration) {
 		this.duration = duration;
 	}
 	
+	/**
+	 * @return
+	 */
 	public int getNextNotification() {
 		return nextNotification;
 	}
 	
+	/**
+	 * @param nextNotification
+	 */
 	public void setNextNotification(int nextNotification) {
 		this.nextNotification = nextNotification;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Calendar getNotifyTime() {
 		return notifyTime;
 	}
 	
+	/**
+	 * @param notifyTime
+	 */
 	public void setNotifyTime(Calendar notifyTime) {
 		this.notifyTime = notifyTime;
 	}
 	
+	/**
+	 * @return
+	 */
 	public Calendar getSchedule() {
 		return schedule;
 	}
 	
+	/**
+	 * @param schedule
+	 */
 	public void setSchedule(Calendar schedule) {
 		this.schedule = schedule;
 	}
 
+	/**
+	 * @return
+	 */
 	public String getDescription() {
 		return description;
 	}
 
+	/**
+	 * @param description
+	 */
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	/**
+	 * @return
+	 */
 	public String getItemName() {
 		return itemName;
 	}
 
+	/**
+	 * @param itemName
+	 */
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
 	}
