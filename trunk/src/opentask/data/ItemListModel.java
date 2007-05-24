@@ -23,6 +23,7 @@ package opentask.data;
 import javax.swing.table.AbstractTableModel;
 import java.util.Vector;
 import java.util.Calendar;
+import java.util.Collections;
 
 /**
  * @author rassler
@@ -74,15 +75,23 @@ public class ItemListModel extends AbstractTableModel {
      * @param row
      */
     public void setValueAt(ActionItem obj, int row) {
+    	String minute = "";
     	line = new String[columnNames.length];
     	Calendar date = obj.getSchedule();
-    	line[0] = (new Integer(date.get(Calendar.DAY_OF_MONTH)).toString()) + "." + (new Integer(date.get(Calendar.MONTH)+1).toString()) + "." + (new Integer(date.get(Calendar.YEAR)).toString()); 
-    	line[1] = (new Integer(date.get(Calendar.HOUR_OF_DAY)).toString()) + ":" + (new Integer(date.get(Calendar.MINUTE)).toString());
+    	line[0] = (new Integer(date.get(Calendar.DAY_OF_MONTH)).toString()) + "." + (new Integer(date.get(Calendar.MONTH)+1).toString()) + "." + (new Integer(date.get(Calendar.YEAR)).toString());
+    	if (new Integer(date.get(Calendar.MINUTE)).toString().length() == 1)
+    		minute = "0";
+    	minute += new Integer(date.get(Calendar.MINUTE)).toString();
+    	line[1] = (new Integer(date.get(Calendar.HOUR_OF_DAY)).toString()) + ":" + minute;
     	line[2] = obj.getItemName();
     	line[3] = new Integer(obj.getDuration()).toString();
     	date = obj.getNotifyTime();
     	line[4] = (new Integer(date.get(Calendar.DAY_OF_MONTH)).toString()) + "." + (new Integer(date.get(Calendar.MONTH)+1).toString()) + "." + (new Integer(date.get(Calendar.YEAR)).toString()); 
-    	line[5] = (new Integer(date.get(Calendar.HOUR_OF_DAY)).toString()) + ":" + (new Integer(date.get(Calendar.MINUTE)).toString());
+    	minute = "";
+    	if (new Integer(date.get(Calendar.MINUTE)).toString().length() == 1)
+    		minute = "0";
+    	minute += new Integer(date.get(Calendar.MINUTE)).toString();
+    	line[5] = (new Integer(date.get(Calendar.HOUR_OF_DAY)).toString()) + ":" + minute;
     	line[6] = obj.getDescription();
     	
     	if (row > data.size() || row < 0)
@@ -95,6 +104,8 @@ public class ItemListModel extends AbstractTableModel {
     		data.add(row, line);
     		fireTableRowsInserted(row-1, row);
     	}
+    	sort();
+    	fireTableDataChanged();
     }
     
     /**
@@ -117,5 +128,9 @@ public class ItemListModel extends AbstractTableModel {
     public void remove(int index) {
     	data.remove(index-1);
     	fireTableRowsDeleted(index-1, index);
+    }
+    
+    public void sort() {
+    	Collections.sort(data, new ItemListModelComparator());
     }
 }
