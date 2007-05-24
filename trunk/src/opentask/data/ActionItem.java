@@ -36,11 +36,11 @@ public class ActionItem {
 	private String itemName;
 	private String description;
 	
-	public static int MINUTE = 1000 * 60; // Milliseconds
+	public static int MINUTE = 1; 
 	public static int HOUR = MINUTE * 60;
 	public static int DAY = HOUR * 24;
 	public static int WEEK = DAY * 7;
-	public static int DEFAULT_DELAY = 5 * MINUTE;
+	public static int DEFAULT_DELAY = 5 * MINUTE;	// Minutes
 	
 	/**
 	 * 

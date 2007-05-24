@@ -88,7 +88,7 @@ public class NotifyDialog extends JDialog implements ActionListener{
 		else if (e.getSource().equals(bLater)){
 			itemList.remove(item);
 			Calendar cal = Calendar.getInstance();
-			cal.add(Calendar.MINUTE, 5);	//TODO: should be ActionItem.DEFAULT_DELAY or any of those constants, but needed as minute value here... 
+			cal.add(Calendar.MINUTE, ActionItem.DEFAULT_DELAY); 
 			item.setNotifyTime(cal);
 			itemList.add(item);
 			setVisible(false);
