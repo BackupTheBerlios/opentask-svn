@@ -83,6 +83,10 @@ public class NotifyDialog extends JDialog implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		if (e.getSource().equals(bDone)) {
 			itemList.remove(item);
+			item.setNotified(true);
+			itemList.add(item);
+			// do nothing... wait for item to be invalid
+//			itemList.remove(item);
 			setVisible(false);
 		}
 		else if (e.getSource().equals(bLater)){

@@ -35,6 +35,8 @@ public class ActionItem {
 	private int nextNotification;
 	private String itemName;
 	private String description;
+	private boolean valid;
+	private boolean notified;
 	
 	public static int MINUTE = 1; 
 	public static int HOUR = MINUTE * 60;
@@ -49,8 +51,10 @@ public class ActionItem {
 		super();
 		schedule = Calendar.getInstance();
 		notifyTime = Calendar.getInstance();
+		valid = true;
+		notified = false;
 	}
-	
+
 	/**
 	 * @param itemName
 	 * @param schedule
@@ -70,6 +74,8 @@ public class ActionItem {
 		else
 			this.nextNotification = nextNotification;
 		this.description = description;
+		valid = true;
+		notified = false;
 	}
 	
 	/**
@@ -83,6 +89,8 @@ public class ActionItem {
 		notifyTime = schedule;
 		duration = 0;
 		nextNotification = DEFAULT_DELAY;
+		valid = true;
+		notified = false;
 	}
 	
 	/**
@@ -167,6 +175,27 @@ public class ActionItem {
 	 */
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isValid() {
+		return valid;
+	}
+
+	/**
+	 * @return
+	 */
+	public boolean isNotified() {
+		return notified;
+	}
+
+	/**
+	 * @param notified
+	 */
+	public void setNotified(boolean notified) {
+		this.notified = notified;
 	}
 	
 }

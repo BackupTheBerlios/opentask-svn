@@ -278,7 +278,14 @@ class TimerAction implements ActionListener {
 					&& notify.get(Calendar.MINUTE) == now.get(Calendar.MINUTE)
 					)
 			{
-				app.notifyTask(item);
+				if (item.isNotified() == false)
+					app.notifyTask(item);
+			}
+			Calendar schedule = item.getSchedule();
+			if (schedule.getTimeInMillis() < now.getTimeInMillis() || schedule.getTimeInMillis() == now.getTimeInMillis())
+			{
+//				it.remove();
+				list.remove(item);
 			}
 		}
 	}
