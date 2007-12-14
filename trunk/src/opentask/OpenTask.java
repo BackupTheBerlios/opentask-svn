@@ -106,6 +106,7 @@ public class OpenTask implements ActionListener{
 		menuItem = new JMenuItem("Edit", KeyEvent.VK_E);
         menu.add(menuItem);
 		menuItem = new JMenuItem("Delete", KeyEvent.VK_D);
+		menuItem.addActionListener(new ItemDeleteAction(null, table, itemList));
         menu.add(menuItem);
         menuBar.add(menu);
 
@@ -245,6 +246,50 @@ class ItemDialogAction implements ActionListener {
 			itmList.add(itm);
 	}
 }
+
+
+/**
+ * @author rassler
+ *
+ */
+
+class ItemDeleteAction implements ActionListener
+{
+	JFrame window;
+	ItemList list;
+	JTable table;
+	
+	/**
+	 * @param window
+	 */
+	public ItemDeleteAction(JFrame window, JTable table, ItemList list)
+	{
+		this.window = window;
+		this.table = table;
+		this.list = list;
+	}
+	
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	public void actionPerformed(ActionEvent e)
+	{
+		int sel = table.getSelectedRow();
+		if (sel > -1)
+		{
+			ActionItem item = null;
+			int cnt = -1;
+			Iterator<ActionItem> it = list.iterator();
+			while (cnt < sel) {
+				item = it.next();
+				++cnt;
+			}
+			list.remove(item);
+		}
+	}
+	
+}
+
 
 /**
  * @author rassler

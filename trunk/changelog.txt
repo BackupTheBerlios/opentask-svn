@@ -1,3 +1,7 @@
+0.1.2
+=====
+* implemented menu entry task->delete
+
 0.1.1
 =====
 * changed deleting behavior of tasks. Acceptance of notification doesn't delete item, it's deleted, if scheduled time is current or past.
