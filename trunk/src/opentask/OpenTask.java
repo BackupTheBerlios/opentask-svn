@@ -104,6 +104,7 @@ public class OpenTask implements ActionListener{
         menuItem.addActionListener(new ItemDialogAction(null, "New Task", itemList));
         menu.add(menuItem);
 		menuItem = new JMenuItem("Edit", KeyEvent.VK_E);
+		menuItem.addActionListener(new ItemEditAction(null, "Edit Task", table, itemList));
         menu.add(menuItem);
 		menuItem = new JMenuItem("Delete", KeyEvent.VK_D);
 		menuItem.addActionListener(new ItemDeleteAction(null, table, itemList));
@@ -140,7 +141,7 @@ public class OpenTask implements ActionListener{
 	 */
 	private static void createAndShowGUI() {
 		JFrame.setDefaultLookAndFeelDecorated(true);
-		JFrame window = new JFrame("OpenTask");
+		JFrame window = new JFrame("OpenTask -- " + Version.getVersion());
 
 		OpenTask task = new OpenTask();
 		task.createMainPane();
@@ -285,6 +286,50 @@ class ItemDeleteAction implements ActionListener
 				++cnt;
 			}
 			list.remove(item);
+		}
+	}
+	
+}
+
+
+class ItemEditAction implements ActionListener
+{
+	JFrame window;
+	ItemList list;
+	JTable table;
+	String title;
+
+	public ItemEditAction(JFrame window, String title, JTable table, ItemList list)
+	{
+		this.window = window;
+		this.table = table;
+		this.list = list;
+		this.title = title;
+	}
+
+	public void actionPerformed(ActionEvent e)
+	{
+		int sel = table.getSelectedRow();
+		if (sel > -1)
+		{
+			ActionItem item = null;
+			int cnt = -1;
+			Iterator<ActionItem> it = list.iterator();
+			while (cnt < sel) {
+				item = it.next();
+				++cnt;
+			}
+			ItemDialog dialog = new ItemDialog(window, title);
+			dialog.setData(item);
+			dialog.setVisible(true);
+			if (dialog.getCloseOP() == ItemDialog.OK)
+			{
+				list.remove(item);
+				item = null;
+				item = dialog.getData();
+				if (item != null)
+					list.add(item);
+			}
 		}
 	}
 	

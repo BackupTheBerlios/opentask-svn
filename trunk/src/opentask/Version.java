@@ -12,7 +12,7 @@ public class Version {
 	public static int minor = 1;
 	public static int buglevel = 2;
 	
-	public String getVersion() {
+	public static String getVersion() {
 		return (new Integer(major)).toString() + "." + (new Integer(minor)).toString() + "." + (new Integer(buglevel)).toString();
 	}
 }

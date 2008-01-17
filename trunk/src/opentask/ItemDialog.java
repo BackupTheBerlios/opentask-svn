@@ -21,6 +21,7 @@
 package opentask;
 
 import java.util.*;
+
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -37,6 +38,11 @@ public class ItemDialog extends JDialog implements ActionListener, ChangeListene
 	static final long serialVersionUID = 1;
 	private ActionItem item;
 	private boolean dirty;
+	private int closeOP;
+	
+	public static int NONE = 0;
+	public static int OK = 1;
+	public static int CANCEL = -1;
 	
 	// GUI fields
 	private JTextField tName;
@@ -199,6 +205,8 @@ public class ItemDialog extends JDialog implements ActionListener, ChangeListene
 		bCancel.addActionListener(this);
 		add(bCancel);
 
+		closeOP = NONE;
+		
 		pack();
 	}
 	
@@ -206,9 +214,20 @@ public class ItemDialog extends JDialog implements ActionListener, ChangeListene
 	 * @param item
 	 */
 	public void setData(ActionItem item) {
-		
+		tName.setText(item.getItemName());
+		dSchedDateEditor.setValue(item.getSchedule().getTime());
+		dSchedTimeEditor.setValue(item.getSchedule().getTime());
+		tDuration.setText(new Integer(item.getDuration()).toString());
+		dNoteDateEditor.setValue(item.getNotifyTime().getTime());
+		dNoteTimeEditor.setValue(item.getNotifyTime().getTime());
+		tNextNotfy.setText(new Integer(item.getNextNotification()).toString());
+		tDescription.setText(item.getDescription());
 	}
 
+	public int getCloseOP() {
+		return closeOP;
+	}
+	
 	/**
 	 * @return
 	 */
@@ -234,7 +253,10 @@ public class ItemDialog extends JDialog implements ActionListener, ChangeListene
 	public void actionPerformed(ActionEvent e) {
 		Object obj = e.getSource();
 		if (obj.equals(bCancel))
+		{
 			setVisible(false);
+			closeOP = CANCEL;
+		}
 		else if (obj.equals(bOk))
 		{
 			if (dirty) {
@@ -264,11 +286,12 @@ public class ItemDialog extends JDialog implements ActionListener, ChangeListene
 					tCal.setTime(tModel.getDate());
 					notification.set(dCal.get(Calendar.YEAR), dCal.get(Calendar.MONTH), dCal.get(Calendar.DAY_OF_MONTH), tCal.get(Calendar.HOUR_OF_DAY), tCal.get(Calendar.MINUTE), 0);
 					
-					item = new ActionItem(tName.getText(), schedule, notification, 0, 0, tDescription.getText());
+					item = new ActionItem(tName.getText(), schedule, notification, new Integer(tDuration.getText()), new Integer(tNextNotfy.getText()), tDescription.getText());
 					setVisible(false);
 				}
 			}
 			else setVisible(false);
+			closeOP = OK;
 		}
     }
 
