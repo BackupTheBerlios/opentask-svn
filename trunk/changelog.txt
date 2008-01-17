@@ -1,6 +1,7 @@
 0.1.2
 =====
 * implemented menu entry task->delete
+* added Version class
 
 0.1.1
 =====
