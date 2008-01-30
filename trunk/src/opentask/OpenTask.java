@@ -374,7 +374,9 @@ class TimerAction implements ActionListener {
 			Calendar schedule = item.getSchedule();
 			if (schedule.getTimeInMillis() < now.getTimeInMillis() || schedule.getTimeInMillis() == now.getTimeInMillis())
 			{
-//				it.remove();
+				// notify, although time is over
+				app.notifyTask(item);
+				// delete item anyway
 				list.remove(item);
 			}
 		}

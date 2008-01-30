@@ -1,3 +1,7 @@
+0.1.3
+=====
+* fixed bug in notification / deletion of elapsed but un-notified tasks
+
 0.1.2
 =====
 * implemented menu entry task->delete
