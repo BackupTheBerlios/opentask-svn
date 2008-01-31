@@ -40,7 +40,7 @@ public class OpenTask implements ActionListener{
 	public JPanel mainPanel;
 	JMenuBar menuBar;
 	JTable table;
-	Timer timer;
+	Timer notifyTimer, autoRepeatTimer;
 	
 	// important Data 
 	private boolean dirty;
@@ -49,6 +49,7 @@ public class OpenTask implements ActionListener{
 	
 	// constants
 	private final int DELAY = 1000;	// milliseconds
+	private final int AUTO_REPEAT_DELAY = DELAY * 60 * 5;	// currently 5 minutes
 
 	/**
 	 * 
@@ -58,9 +59,14 @@ public class OpenTask implements ActionListener{
 		itemList = new ItemList(model);	
 		if (!itemList.load())
 			JOptionPane.showMessageDialog(mainPanel, "Error: Reading data from disk was not successful!", "Disk Error", JOptionPane.ERROR_MESSAGE);
-		TimerAction timerListener = new TimerAction(this, itemList);
-		timer = new Timer(DELAY, timerListener);
-		timer.start();
+
+		TimerNotifyAction timerNotifyListener = new TimerNotifyAction(this, itemList);
+		notifyTimer = new Timer(DELAY, timerNotifyListener);
+		notifyTimer.start();
+
+		TimerAutoRepeatAction timerAutoRepeatListener = new TimerAutoRepeatAction(this);
+		autoRepeatTimer = new Timer(AUTO_REPEAT_DELAY, timerAutoRepeatListener);
+		autoRepeatTimer.start();
 	}
 	
 	/**
@@ -355,14 +361,14 @@ class ItemEditAction implements ActionListener
  * @author rassler
  *
  */
-class TimerAction implements ActionListener {
+class TimerNotifyAction implements ActionListener {
 	private OpenTask app;
 	private ItemList list;
 	/**
 	 * @param app
 	 * @param list
 	 */
-	public TimerAction(Object app, ItemList list) {
+	public TimerNotifyAction(Object app, ItemList list) {
 		this.app = (OpenTask)app;
 		this.list = list;
 	}
@@ -396,4 +402,24 @@ class TimerAction implements ActionListener {
 			}
 		}
 	}
+}
+
+/**
+ * @author rassler
+ *
+ */
+class TimerAutoRepeatAction implements ActionListener {
+	private OpenTask app;
+	
+	public TimerAutoRepeatAction(Object app) {
+		this.app = (OpenTask)app;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+	 */
+	public void actionPerformed(ActionEvent e) {
+		app.saveData();
+	}
+	
 }
