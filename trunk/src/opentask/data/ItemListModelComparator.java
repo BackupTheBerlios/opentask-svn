@@ -44,7 +44,9 @@ public class ItemListModelComparator implements Comparator<String[]> {
 		// Task date
 		for (int i = 0; i < 3; ++i) {
 			date1[i] = token1.nextToken();
+			if (date1[i].length() == 1) date1[i] = "0" + date1[i];
 			date2[i] = token2.nextToken();
+			if (date2[i].length() == 1) date2[i] = "0" + date2[i];
 		}
 		comp = date1[2].compareTo(date2[2]);
 		if (comp != 0) return comp;
@@ -74,7 +76,9 @@ public class ItemListModelComparator implements Comparator<String[]> {
 		date2 = new String[3];
 		for (int i = 0; i < 3; ++i) {
 			date1[i] = token1.nextToken();
+			if (date1[i].length() == 1) date1[i] = "0" + date1[i];
 			date2[i] = token2.nextToken();
+			if (date2[i].length() == 1) date2[i] = "0" + date2[i];
 		}
 		comp = date1[2].compareTo(date2[2]);
 		if (comp != 0) return comp;

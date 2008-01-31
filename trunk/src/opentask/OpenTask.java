@@ -128,7 +128,7 @@ public class OpenTask implements ActionListener{
 		mainPanel.setBorder(BorderFactory.createEmptyBorder(5,5,5,5));
 		
 		table = new JTable(model);
-		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+//		table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 		table.setRowHeight(23);
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
