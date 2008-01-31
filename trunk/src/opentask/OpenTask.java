@@ -101,7 +101,7 @@ public class OpenTask implements ActionListener{
         menu = new JMenu("Task");
 		menuItem = new JMenuItem("New", KeyEvent.VK_N);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
-        menuItem.addActionListener(new ItemDialogAction(null, "New Task", itemList));
+        menuItem.addActionListener(new ItemDialogAction(null, "New Task", table, itemList));
         menu.add(menuItem);
 		menuItem = new JMenuItem("Edit", KeyEvent.VK_E);
 		menuItem.addActionListener(new ItemEditAction(null, "Edit Task", table, itemList));
@@ -132,6 +132,9 @@ public class OpenTask implements ActionListener{
 		table.setRowHeight(23);
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
+		TableColumnPacker cPacker = new TableColumnPacker(table);
+		cPacker.packColumns();
+
 		mainPanel.setLayout(new BorderLayout());
 		mainPanel.add(scrollPane);
 	}
@@ -215,15 +218,18 @@ class ItemDialogAction implements ActionListener {
 	String title;
 	ActionItem item;
 	ItemList itmList;
+	JTable table;
+	
 	/**
 	 * @param window
 	 * @param title
 	 * @param list
 	 */
-	public ItemDialogAction(JFrame window, String title, ItemList list) {
+	public ItemDialogAction(JFrame window, String title, JTable table, ItemList list) {
 		this.window = window;
 		this.title = title;
 		this.itmList = list;
+		this.table = table;
 	}
 	/**
 	 * @param window
@@ -231,11 +237,12 @@ class ItemDialogAction implements ActionListener {
 	 * @param item
 	 * @param list
 	 */
-	public ItemDialogAction(JFrame window, String title, ActionItem item, ItemList list) {
+	public ItemDialogAction(JFrame window, String title, JTable table, ActionItem item, ItemList list) {
 		this.window = window;
 		this.title = title;
 		this.item = item;
 		this.itmList = list;
+		this.table = table;
 	}
 	/* (non-Javadoc)
 	 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -247,6 +254,8 @@ class ItemDialogAction implements ActionListener {
 		ActionItem itm = dialog.getData();
 		if (itm != null) 
 			itmList.add(itm);
+		TableColumnPacker cPacker = new TableColumnPacker(table);
+		cPacker.packColumns();
 	}
 }
 
@@ -289,6 +298,8 @@ class ItemDeleteAction implements ActionListener
 			}
 			list.remove(item);
 		}
+		TableColumnPacker cPacker = new TableColumnPacker(table);
+		cPacker.packColumns();
 	}
 	
 }
@@ -333,6 +344,8 @@ class ItemEditAction implements ActionListener
 					list.add(item);
 			}
 		}
+		TableColumnPacker cPacker = new TableColumnPacker(table);
+		cPacker.packColumns();
 	}
 	
 }
