@@ -21,6 +21,8 @@
 
 package opentask.data;
 
+import opentask.Environment;
+
 import java.util.*;
 
 import java.io.*;
@@ -33,7 +35,6 @@ import java.io.*;
 public class ItemList {
 	private TreeSet<ActionItem> list;
 	private ItemListModel model;
-	private final String fileName = System.getProperty("user.home") + System.getProperty("file.separator") + "opentask.dat";
 	private final String SEPARATOR = "#";
 	
 	/**
@@ -180,10 +181,10 @@ public class ItemList {
 		BufferedWriter outputStream = null;
 		boolean success = true;
 		try {
-			File file = new File(fileName);
+			File file = new File(Environment.getDataFile());
 			if (!file.exists())
 				file.createNewFile();
-			outputStream = new BufferedWriter(new FileWriter(fileName));
+			outputStream = new BufferedWriter(new FileWriter(Environment.getDataFile()));
 			Iterator<ActionItem> it = iterator();
 			while (it.hasNext()) {
 				ActionItem item = it.next();
@@ -216,7 +217,7 @@ public class ItemList {
 		BufferedReader inputStream = null;
 		boolean success = true;
 		try {
-			inputStream = new BufferedReader(new FileReader(fileName));
+			inputStream = new BufferedReader(new FileReader(Environment.getDataFile()));
 			while (inputStream.ready()) {
 				String line = inputStream.readLine();
 				if (line.length() == 0) break; 
