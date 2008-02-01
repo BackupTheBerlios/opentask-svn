@@ -2,6 +2,7 @@
 =====
 * implemented table column width calculation
 * added periodically autosave function
+* implemented settings saving and loading capability
 * fixed bug in notification / deletion of elapsed but un-notified tasks
 * fixed bug in sorting order
 

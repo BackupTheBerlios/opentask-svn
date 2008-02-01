@@ -37,12 +37,14 @@ import opentask.data.*;
 public class OpenTask implements ActionListener{
 
 	// important GUI elements
+	static JFrame mainWindow;
 	public JPanel mainPanel;
 	JMenuBar menuBar;
 	JTable table;
 	Timer notifyTimer, autoRepeatTimer;
 	
 	// important Data 
+	private Settings settings;
 	private boolean dirty;
 	private ItemList itemList;
 	private ItemListModel model;
@@ -55,6 +57,8 @@ public class OpenTask implements ActionListener{
 	 * 
 	 */
 	public OpenTask() {
+		settings = new Settings();
+		
 		model = new ItemListModel();
 		itemList = new ItemList(model);	
 		if (!itemList.load())
@@ -86,6 +90,15 @@ public class OpenTask implements ActionListener{
 				JOptionPane.showMessageDialog(mainPanel, "Error: Writing data to disk was not successful!", "Disk Error", JOptionPane.ERROR_MESSAGE);
 	}
 	
+	/**
+	 * 
+	 */
+	public void saveSettings() {
+		settings.setPosition(mainWindow.getX(), mainWindow.getY());
+		settings.setSize(mainWindow.getWidth(), mainWindow.getHeight());
+		settings.save();
+	}
+
 	/**
 	 * 
 	 */
@@ -146,13 +159,29 @@ public class OpenTask implements ActionListener{
 	}
 	
 	
+	private void applySettings() //(JFrame window)
+	{
+		if (settings.load())
+		{
+			mainWindow.setLocation(settings.getX(), settings.getY());
+			mainWindow.setSize(settings.getWidth(), settings.getHeight());
+		}
+		else
+		{
+			mainWindow.setSize(800, 400);
+		}
+
+	}
+	
+	
 	/**
 	 * 
 	 */
 	private static void createAndShowGUI() {
 		JFrame.setDefaultLookAndFeelDecorated(true);
 		JFrame window = new JFrame("OpenTask -- " + Version.getVersion());
-
+		mainWindow = window;
+		
 		OpenTask task = new OpenTask();
 		task.createMainPane();
 		task.createMenu();	
@@ -161,7 +190,7 @@ public class OpenTask implements ActionListener{
 		window.setContentPane(task.mainPanel);
 		
 		window.pack();
-		window.setSize(800, 400);
+		task.applySettings();//(window);
 		window.setVisible(true);
 		
 	}
@@ -210,7 +239,11 @@ class CloseAction implements ActionListener {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-    	if (app instanceof OpenTask) ((OpenTask)app).saveData();
+    	if (app instanceof OpenTask) 
+    	{
+    		((OpenTask)app).saveData();
+    		((OpenTask)app).saveSettings();
+    	}
         System.exit(0);
     }
 }
