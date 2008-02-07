@@ -1,6 +1,8 @@
 0.1.4
 =====
+* changed notification behavior to just inform at schedule time
 * fixed bug in notification behaviour
+* minor code cleanup
 
 0.1.3
 =====

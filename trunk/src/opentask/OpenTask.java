@@ -78,8 +78,8 @@ public class OpenTask implements ActionListener{
 	/**
 	 * @param item
 	 */
-	public void notifyTask(ActionItem item) {
-		NotifyDialog dialog = new NotifyDialog(null, "Notification", item, itemList);
+	public void notifyTask(ActionItem item, boolean remind) {
+		NotifyDialog dialog = new NotifyDialog(null, "Notification", item, itemList, remind);
 		dialog.setVisible(true);
 	}
 	
@@ -422,7 +422,7 @@ class TimerNotifyAction implements ActionListener {
 				if (item.isNotified() == false)
 				{
 					item.setNotified(true);
-					app.notifyTask(item);
+					app.notifyTask(item, false);
 					// break, because list has been modified -- avoid concurrency exception
 					break;
 				}
@@ -431,6 +431,7 @@ class TimerNotifyAction implements ActionListener {
 					Calendar schedule = item.getSchedule();
 					if (schedule.getTimeInMillis() < now.getTimeInMillis() || schedule.getTimeInMillis() == now.getTimeInMillis())
 					{
+						app.notifyTask(item, true);
 						// delete item anyway
 						list.remove(item);
 						// break, because list has been modified -- avoid concurrency exception

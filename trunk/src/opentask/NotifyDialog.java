@@ -46,7 +46,7 @@ public class NotifyDialog extends JDialog implements ActionListener{
 	 * @param itm
 	 * @param list
 	 */
-	public NotifyDialog(Frame owner, String title, ActionItem itm, ItemList list) {
+	public NotifyDialog(Frame owner, String title, ActionItem itm, ItemList list, boolean remind) {
 		super(owner, title, true);
 		item = itm;
 		itemList = list;
@@ -69,9 +69,12 @@ public class NotifyDialog extends JDialog implements ActionListener{
 		bDone = new JButton("Done!");
 		bDone.addActionListener(this);
 		pane.add(bDone);
-		bLater = new JButton("Remind me later again!");
-		bLater.addActionListener(this);
-		pane.add(bLater);
+		if (!remind)
+		{
+			bLater = new JButton("Remind me later again!");
+			bLater.addActionListener(this);
+			pane.add(bLater);
+		}
 		add(pane);
 		
 		pack();
