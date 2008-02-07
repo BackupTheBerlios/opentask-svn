@@ -1,7 +1,7 @@
 /**
  * 
  */
-package opentask.data;
+package opentask.gui;
 
 import javax.swing.*;
 import javax.swing.table.*;
