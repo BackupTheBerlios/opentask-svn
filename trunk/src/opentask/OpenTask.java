@@ -423,19 +423,19 @@ class TimerNotifyAction implements ActionListener {
 				{
 					item.setNotified(true);
 					app.notifyTask(item);
+					// break, because list has been modified -- avoid concurrency exception
 					break;
 				}
-			}
-			if (item.isNotified() == true)
-			{
-				Calendar schedule = item.getSchedule();
-				if (schedule.getTimeInMillis() < now.getTimeInMillis() || schedule.getTimeInMillis() == now.getTimeInMillis())
+				else
 				{
-					// notify, although time is over
-					app.notifyTask(item);
-					// delete item anyway
-					list.remove(item);
-					break;
+					Calendar schedule = item.getSchedule();
+					if (schedule.getTimeInMillis() < now.getTimeInMillis() || schedule.getTimeInMillis() == now.getTimeInMillis())
+					{
+						// delete item anyway
+						list.remove(item);
+						// break, because list has been modified -- avoid concurrency exception
+						break;
+					}
 				}
 			}
 		}
