@@ -50,8 +50,9 @@ public class OpenTask implements ActionListener{
 	private ItemListModel model;
 	
 	// constants
-	private final int DELAY = 1000;	// milliseconds
-	private final int AUTO_REPEAT_DELAY = DELAY * 60 * 5;	// currently 5 minutes
+	private final int SECOND = 1000;	// milliseconds
+	private final int DELAY = 5 * SECOND; 
+	private final int AUTO_REPEAT_DELAY = SECOND * 60 * 5;	// currently 5 minutes
 
 	/**
 	 * 
@@ -415,23 +416,26 @@ class TimerNotifyAction implements ActionListener {
 		while (it.hasNext()) {
 			ActionItem item = it.next();
 			Calendar notify = item.getNotifyTime();
-			if (notify.get(Calendar.YEAR) == now.get(Calendar.YEAR)
-					&& notify.get(Calendar.MONTH) == now.get(Calendar.MONTH)
-					&& notify.get(Calendar.DAY_OF_MONTH) == now.get(Calendar.DAY_OF_MONTH)
-					&& notify.get(Calendar.HOUR_OF_DAY) == now.get(Calendar.HOUR_OF_DAY)
-					&& notify.get(Calendar.MINUTE) == now.get(Calendar.MINUTE)
-					)
+			if (notify.getTimeInMillis() < now.getTimeInMillis() || notify.getTimeInMillis() == now.getTimeInMillis())
 			{
 				if (item.isNotified() == false)
+				{
+					item.setNotified(true);
 					app.notifyTask(item);
+					break;
+				}
 			}
-			Calendar schedule = item.getSchedule();
-			if (schedule.getTimeInMillis() < now.getTimeInMillis() || schedule.getTimeInMillis() == now.getTimeInMillis())
+			if (item.isNotified() == true)
 			{
-				// notify, although time is over
-				app.notifyTask(item);
-				// delete item anyway
-				list.remove(item);
+				Calendar schedule = item.getSchedule();
+				if (schedule.getTimeInMillis() < now.getTimeInMillis() || schedule.getTimeInMillis() == now.getTimeInMillis())
+				{
+					// notify, although time is over
+					app.notifyTask(item);
+					// delete item anyway
+					list.remove(item);
+					break;
+				}
 			}
 		}
 	}

@@ -86,14 +86,15 @@ public class NotifyDialog extends JDialog implements ActionListener{
 			item.setNotified(true);
 			itemList.add(item);
 			// do nothing... wait for item to be invalid
-//			itemList.remove(item);
 			setVisible(false);
 		}
 		else if (e.getSource().equals(bLater)){
 			itemList.remove(item);
 			Calendar cal = Calendar.getInstance();
+			// FIXME: use real delay value (currently only default delay is used)
 			cal.add(Calendar.MINUTE, ActionItem.DEFAULT_DELAY); 
 			item.setNotifyTime(cal);
+			item.setNotified(false);
 			itemList.add(item);
 			setVisible(false);
 		}
