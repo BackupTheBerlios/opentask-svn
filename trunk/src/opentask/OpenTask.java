@@ -153,6 +153,7 @@ public class OpenTask implements ActionListener{
 		table.setRowHeight(23);
 		JScrollPane scrollPane = new JScrollPane(table);
 		table.setFillsViewportHeight(true);
+		table.setDefaultRenderer(Object.class, new CustomizedTableRenderer());
 		TableColumnPacker cPacker = new TableColumnPacker(table);
 		cPacker.packColumns();
 

@@ -1,6 +1,7 @@
 0.1.4
 =====
 * changed notification behavior to just inform at schedule time
+* implemented a basic table cell renderer
 * fixed bug in notification behaviour
 * minor code cleanup
 
