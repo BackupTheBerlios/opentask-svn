@@ -10,7 +10,7 @@ package opentask;
 public class Version {
 	public static int major = 0;
 	public static int minor = 1;
-	public static int buglevel = 4;
+	public static int buglevel = 5;
 	
 	public static String getVersion() {
 		return (new Integer(major)).toString() + "." + (new Integer(minor)).toString() + "." + (new Integer(buglevel)).toString();

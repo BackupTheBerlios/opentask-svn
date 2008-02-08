@@ -30,6 +30,7 @@ import java.util.Calendar;
 
 import opentask.data.*;
 import opentask.gui.*;
+import opentask.dialogs.*;
 
 /**
  * @author rassler
@@ -137,7 +138,10 @@ public class OpenTask implements ActionListener{
         menuBar.add(menu);
 
         // About Menu
-        menu = new JMenu("About");
+        menu = new JMenu("Help");
+        menuItem = new JMenuItem("About");
+        menuItem.addActionListener(new AboutDialogAction());
+        menu.add(menuItem);
         menuBar.add(menu);
 	}
 	
@@ -391,6 +395,18 @@ class ItemEditAction implements ActionListener
 	}
 	
 }
+
+
+class AboutDialogAction implements ActionListener
+{
+	public void actionPerformed(ActionEvent e)
+	{
+		AboutDialog about = new AboutDialog(null);
+		about.setVisible(true);
+	}
+	
+}
+
 
 
 /**
