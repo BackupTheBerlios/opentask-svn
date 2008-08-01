@@ -1,6 +1,7 @@
 0.1.5
 =====
 * added about dialog
+* notify dialog gets window manager order onTop on popup 
 
 0.1.4
 =====

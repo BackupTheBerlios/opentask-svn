@@ -78,6 +78,7 @@ public class NotifyDialog extends JDialog implements ActionListener{
 		add(pane);
 		
 		pack();
+		toFront();
 	}
 	
 	/* (non-Javadoc)
